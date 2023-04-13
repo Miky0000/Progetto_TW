@@ -1,0 +1,61 @@
+{% extends 'homepage/base.html' %}
+{% load prodotto_tag %}
+{% block title %}Hompage{% endblock title %}
+
+{% block content %}
+
+    <div class="nav-scroller py-1 mb-2">
+        <nav class="nav d-flex justify-content-between">
+            {% for categoria_tag, categoria_display_name in categorie %}
+                <a class="p-2 text-muted"
+                   href="{% url 'prodotto:prodotto-list' categoria_tag %}">{{ categoria_display_name }}</a>
+            {% endfor %}
+        </nav>
+    </div>
+
+    <main role="main">
+        <section class="jumbotron text-center">
+            <div class="container">
+                {% if user.is_authenticated %}
+                    <h2>Benvenuto {{ user.username }}</h2>
+                {% else %}
+                    <h2>Benvenuto sul nostro sito</h2>
+                {% endif %}
+                <p class="lead text-muted">{% lorem %}</p>
+                <p>
+                    <a href="{% url 'prodotto:prodotto-list' %}" class="btn btn-primary my-2">Catalogo Prodotti</a>
+                </p>
+            </div>
+        </section>
+
+        <h2>Prodotti Più Venduti</h2>
+        <div class="album py-5 bg-light">
+            <div class="container">
+                <div class="row">
+                    {% for prodotti in piu_venduti %}
+                        <div class="col-md-4">
+                            <div class="card mb-4 shadow-sm">
+                                <img src="{{ prodotti.img.url }}" width="100%" height="300">
+                                <div class="card-body">
+                                    <h3>{{ prodotti.titolo }}</h3>
+                                    <h4>{{ prodotti.prezzo }}$</h4>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="btn-group">
+                                            <a type="button" class="btn btn-sm btn-outline-secondary"
+                                               href="{% url 'prodotto:prodotto-detail' prodotti.id %}">Vedi</a>
+                                            <a type="button" class="btn btn-sm btn-outline-secondary"
+                                               href="{% url 'carrello:cart_add' prodotti.id %}">Add</a>
+                                        </div>
+                                        <small class="text-muted">Recensioni({{ recensioni_count|filtra:prodotti.id|length }})</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+{% endblock content %}

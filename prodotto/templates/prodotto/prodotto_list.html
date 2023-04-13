@@ -1,0 +1,72 @@
+{% extends "homepage/base.html" %}
+{% load static %}
+{% load prodotto_tag %}
+
+{% block content %}
+    <h1>Prodotti disponibili</h1>
+    <br>
+
+    <section class="jumbotron text-center">
+        <form class="form-inline my-2 my-lg-0" method="get" action="{% url 'prodotto:cerca' %}">
+            <input name="query" class="form-control mr-sm-2" type="text" placeholder="Cerca" aria-label="Search">
+            <button class="btn btn-outline-primary" type="submit">Cerca</button>
+        </form>
+    </section>
+
+    {% if object_list|length %}
+        <table class="table">
+            <ul>
+                <tr>
+                    <th></th>
+                    <th>Nome</th>
+                    <th>Marca</th>
+                    <th>Categoria</th>
+                    <th>Prezzo</th>
+                    <th>Pubblicato</th>
+                </tr>
+                {% for prodotti in object_list %}
+                    <tr>
+                    <th><img src="{{ prodotti.img.url }}" width="300"></th>
+                    <th><h3>{{ prodotti.titolo }}</h3></th>
+                    <th>{{ prodotti.marca }}</th>
+                    <th>{{ prodotti.get_categoria_display }}</th>
+                    <th><h4>{{ prodotti.prezzo }}$</h4></th>
+                    <th>{{ prodotti.modificato }}</th>
+                    <th><a class="btn btn-outline-primary" href="{% url 'prodotto:prodotto-detail' prodotti.id %}">visualizza
+                        prodotto</a></th>
+                    <th><a class="btn btn-outline-primary" href="{% url 'carrello:cart_add' prodotti.id %}">Aggiungi al
+                        carrello</a></th>
+                    <th>Recensioni({{ recensioni_count|filtra:prodotti.id|length }})</th>
+                {% endfor %}
+            </ul>
+        </table>
+
+        <a href="">Torna in testa alla pagina</a><br>
+
+        <br>
+        <div>
+            <h3>
+                <div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a class="btn btn-primary" href="?page=1">&laquo; first</a>
+            <a class="btn btn-primary" href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+        </span>
+
+        {% if page_obj.has_next %}
+            <a class="btn btn-primary" href="?page={{ page_obj.next_page_number }}">next</a>
+            <a class="btn btn-primary" href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+                </div>
+            </h3>
+        </div>
+    {% else %}
+        <h3>Non ci sono ancora prodotti disponibili</h3><br>
+    {% endif %}
+
+{% endblock %}

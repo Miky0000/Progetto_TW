@@ -1,0 +1,47 @@
+{% extends "homepage/base.html" %}
+{% load static %}
+{% load prodotto_tag %}
+
+{% block content %}
+
+    <h1>Sei sicuro di restituire questo prodotto?</h1>
+    <div class="breadcrumb-area">
+        <div class="container">
+            <div class="row align-items-center justify-content-center">
+                <div class="col-12 text-right">
+                    <!-- breadcrumb-list start -->
+                    <h4><a class="btn btn-primary my-2" href={% url 'ordine:ordine-list' %}>I tuoi ordini</a>
+                    </h4>
+                    <!-- breadcrumb-list end -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <form method="post">
+
+        <h2>{{ object.prodotto }}</h2>
+        <br>
+        <img src="{{ object.image }}">
+        <br>
+        <h2>Prezzo - {{ object.prezzo }} $</h2>
+        <br>
+        <h2>Quanti prodotti vuoi restituire? - <input class="btn btn-secondary" required="required" type="text"
+                                                      name="quantity_input"
+                                                      value="{{ object.quantity }}"/>
+        </h2>
+        <p>Acquistato - {{ object.data }}</p>
+        <br>
+        {% csrf_token %}
+        <textarea name="motivo" id="messaggio" required="required" class="form-control" rows="3" maxlength="2000"
+                  placeholder="Scrivi il motivo del tuo reso max 2000 caratteri"></textarea>
+        <br>
+        <div class="modal-body">
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Restituisci</button>
+            </div>
+        </div>
+    </form>
+    <br>
+    <br>
+
+{% endblock %}

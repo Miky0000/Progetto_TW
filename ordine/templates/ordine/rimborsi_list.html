@@ -1,0 +1,83 @@
+{% extends "homepage/base.html" %}
+{% load static %}
+{% load ordine_tag %}
+
+{% block content %}
+    <h1>Lista Resi</h1>
+    <div class="breadcrumb-area">
+        <div class="container">
+            <div class="row align-items-center justify-content-center">
+                <div class="col-12 text-right">
+                    <!-- breadcrumb-list start -->
+                    <h4><a href={% url 'prodotto:prodotto-list' %}>Catalogo Prodotti</a></h4>
+                    <!-- breadcrumb-list end -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <!-- lista prodotti acuqistati -->
+    {% if object_list|length %}
+        <table class="table">
+            <ul>
+                <tr>
+                    <th></th>
+                    <th>Nome</th>
+                    <th>Prezzo</th>
+                    <th>Qty</th>
+                    <th>Data Acquisto</th>
+                </tr>
+                {% for prodotti in object_list %}
+                    <tr>
+                        <th><img src="{{ prodotti.image }}" width="300"></th>
+                        <th><h3>{{ prodotti.prodotto }}</h3></th>
+                        <th><h4>{{ prodotti.prezzo }}$</h4></th>
+                        <th><h4>{{ prodotti.quantity }}</h4></th>
+                        <th>{{ prodotti.effettuato }}</th>
+                        {% if prodotti.rimborsato %}
+                            <th><h2>Rimborsato</h2></th>
+                        {% else %}
+                            <th><h2>Stiamo elaborando il tuo rimborso</h2></th>
+                        {% endif %}
+                        <!-- link dettaglio prodotto -->
+                        {% for prod in prodotti_all %}
+                            {% if prod.id == prodotti.prod_id %}
+                                <th><a href="{% url 'prodotto:prodotto-detail' prodotti.prod_id %}">visualizza prodotto</a></th>
+                            {% endif %}
+                        {% endfor %}
+                        <!-- fine dettaglio prodotto -->
+                    </tr>
+                {% endfor %}
+            </ul>
+        </table>
+
+        <a href="">Torna in testa alla pagina</a><br>
+
+        <br>
+        <div>
+            <h3>
+                <div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a class="btn btn-primary" href="?page=1">&laquo; first</a>
+            <a class="btn btn-primary" href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+        </span>
+
+        {% if page_obj.has_next %}
+            <a class="btn btn-primary" href="?page={{ page_obj.next_page_number }}">next</a>
+            <a class="btn btn-primary" href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+                </div>
+            </h3>
+        </div>
+    {% else %}
+        <h3>Non hai ancora effettuato il reso di nessun prodotto</h3><br>
+    {% endif %}
+    <!-- fine lista prodotti acquistati -->
+
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "homepage/base.html" %}
+
+{% block content %}
+    <h2>Modifica profilo</h2>
+    <br>
+    <hr>
+    <form method="post">
+        {% csrf_token %}
+        {% for field in user_form %}
+            <h4>
+                {{ field.label_tag }}
+                {{ field }}
+                {% if field.help_text %}
+                    <small style="color: grey">{{ field.help_text }}</small>
+                {% endif %}
+
+                {% for error in field.errors %}
+                    <p style="color: red">{{ error }}</p>
+                {% endfor %}
+            </h4>
+        {% endfor %}
+
+        {% for field in profile_form %}
+            <h4>
+                {{ field.label_tag }}
+                {{ field }}
+                {% if field.help_text %}
+                    <small style="color: grey">{{ field.help_text }}</small>
+                {% endif %}
+
+                {% for error in field.errors %}
+                    <p style="color: red">{{ error }}</p>
+                {% endfor %}
+            </h4>
+        {% endfor %}
+        <br>
+        <hr>
+        <input class="btn btn-outline-primary" type="submit" value="Modifica">
+    </form>
+
+{% endblock %}

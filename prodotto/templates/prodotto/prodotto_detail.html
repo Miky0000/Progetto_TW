@@ -1,0 +1,62 @@
+{% extends "homepage/base.html" %}
+{% load static %}
+{% load prodotto_tag %}
+
+{% block content %}
+
+    <h1>Dattaglio Prodotto</h1>
+    <div class="breadcrumb-area">
+        <div class="container">
+            <div class="row align-items-center justify-content-center">
+                <div class="col-12 text-right">
+                    <!-- breadcrumb-list start -->
+                    <h4><a class="btn btn-primary my-2" href={% url 'prodotto:prodotto-list' %}>Catalogo Prodotti</a>
+                    </h4>
+                    <!-- breadcrumb-list end -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h2>{{ object.titolo }}</h2>
+    <img src="{{ object.img.url }}">
+    <p>Categoria - {{ object.get_categoria_display }}</p>
+    <p>Marca - {{ object.marca }}</p>
+    <p>Id prodotto - {{ object.id_prodotto }}</p>
+    <p>Modello - {{ object.modello }}</p>
+    <p>Anno - {{ object.anno }}</p>
+    <p>Venditore - {{ object.venditore }}</p>
+    <h2>Prezzo - {{ object.prezzo }} $</h2>
+    <p>Descrizione - {{ object.descrizione }}</p>
+    <p>Publicato - {{ object.publicato }}</p>
+    <p>Ultima modifica - {{ object.modificato }}</p><br>
+    <h3><a class="btn btn-outline-primary" href="{% url 'carrello:cart_add' object.id %}">Aggiungi al carrello</a><br></h3>
+    <br>
+    <br>
+    <br>
+    <br>
+    {% if recensioni|filtra:object.id|length %}
+        <h3>Recensioni</h3>
+        <table class="table">
+            <tr>
+                <td><h4>Commento</h4></td>
+                <td><h4>Valutazione</h4></td>
+                <td><h4>User</h4></td>
+                <td><h4>Data Creazione</h4></td>
+            </tr>
+            {% for recensione in recensioni %}
+                {% if recensione.prodotto.id == object.id %}
+                    <tr>
+                        <td><h4>{{ recensione.commento }}</h4></td>
+                        <td><h4>{{ recensione.valutazione }} su 5</h4></td>
+                        <td><h4>{{ recensione.user.username }}</h4></td>
+                        <td><p>{{ recensione.creata }}</p></td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </table>
+    {% else %}
+        <h3>Non ci sono ancora Recensioni per questo prodotto</h3>
+    {% endif %}
+
+{% endblock %}
