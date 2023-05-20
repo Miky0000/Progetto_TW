@@ -1,11 +1,11 @@
 from django.contrib import admin
-from .models import Ordine, Contattacci, Recensione, Rimborsi
+from .models import Ordine, Contattaci, Recensione, Rimborsi
 from django.core.mail import send_mail
 
 
 @admin.register(Ordine)
 class OrdineAdmin(admin.ModelAdmin):
-    list_display = ('id', 'email', 'spedito', 'restituito', 'user', 'prodotto', 'prezzo', 'quantity', 'totale', 'data')
+    list_display = ('id', 'email', 'spedito', 'restituito', 'user', 'prodotto','prod_id', 'prezzo', 'quantity', 'totale', 'data')
     readonly_fields = ('spedito', 'restituito')
     actions = ['spedisci']
 
@@ -31,7 +31,7 @@ class OrdineAdmin(admin.ModelAdmin):
                 )
 
 
-@admin.register(Contattacci)
+@admin.register(Contattaci)
 class ContattacciAdmin(admin.ModelAdmin):
     list_display = ('nome', 'email', 'oggetto')
 

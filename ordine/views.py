@@ -1,11 +1,12 @@
+import datetime
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
 from django.utils.decorators import method_decorator
 from django.core.mail import send_mail
-from .models import Ordine, Contattacci, Recensione, Rimborsi
+from .models import Ordine, Contattaci, Recensione, Rimborsi
 from prodotto.models import Prodotto
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView
 from django.contrib.auth.decorators import login_required
 
 
@@ -18,7 +19,7 @@ def Checkout(request):
         cart = request.session.get("cart")
         uid = request.session.get("_auth_user_id")
         user = User.objects.get(pk=uid)
-
+        data = datetime.datetime.now()
         for i in cart:
             a = (float(cart[i]['price']))
             b = cart[i]['quantity']
@@ -33,7 +34,8 @@ def Checkout(request):
                 indirizzo=indirizzo,
                 telefono=telefono,
                 email=email,
-                totale=totale
+                totale=totale,
+                data=data
             )
             ordine.save()
             p = Prodotto.objects.get(id=ordine.prod_id)
@@ -44,10 +46,11 @@ def Checkout(request):
                 'Ricezione Ordine',
                 'Ciao abbiamo preso in carico il tuo ordine, \n'
                 + ordine.prodotto + '\n'
-                'prezzo: ' + str(ordine.prezzo) + '\n'
-                'qty: ' + str(ordine.quantity) + '\n'
-                'effettuato il: ' + str(ordine.data) + '\n'
-                'riceverai un email non appena sarà pronto per essere spedito.',
+                                    'prezzo: ' + str(ordine.prezzo) + '\n'
+                                                                      'qty: ' + str(ordine.quantity) + '\n'
+                                                                                                       'effettuato il: ' + str(
+                    ordine.data) + '\n'
+                                   'riceverai un email non appena sarà pronto per essere spedito.',
                 'from@example.com',
                 [email],
                 fail_silently=False,
@@ -84,10 +87,11 @@ def Restituisci(request, id):
                 'Reso Ordine',
                 'Ciao abbiamo preso in carico il tuo reso, \n'
                 + ordine.prodotto + '\n'
-                'prezzo: ' + str(ordine.prezzo) + '\n'
-                'qty: ' + str(q) + '\n'
-                'effettuato il: ' + str(ordine.data) + '\n'
-                'riceverai un email non appena sarài rimborsato.',
+                                    'prezzo: ' + str(ordine.prezzo) + '\n'
+                                                                      'qty: ' + str(q) + '\n'
+                                                                                         'effettuato il: ' + str(
+                    ordine.data) + '\n'
+                                   'riceverai un email non appena sarài rimborsato.',
                 'from@example.com',
                 [rimborso.user.email],
                 fail_silently=False,
@@ -102,7 +106,7 @@ def Restituisci(request, id):
 @login_required
 def Contatto(request):
     if request.method == 'POST':
-        contatto = Contattacci(
+        contatto = Contattaci(
             nome=request.POST.get('nome'),
             email=request.POST.get('email'),
             oggetto=request.POST.get('oggetto'),

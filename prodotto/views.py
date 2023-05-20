@@ -1,8 +1,18 @@
-from django.shortcuts import render
 from django.views.generic import DetailView, ListView
-from .forms import ProdottoForm
 from .models import Prodotto
-from ordine.models import Recensione
+from ordine.models import Recensione, Ordine
+
+
+def comp(id):
+    ordini_det = Ordine.objects.filter(prod_id=id)
+    for x in ordini_det:
+        ordini_dat = Ordine.objects.filter(data=x.data)
+        if len(ordini_dat) > 1:
+            comprati = set(())
+            for y in ordini_dat[:3]:
+                comprati.add(Prodotto.objects.get(id=y.prod_id))
+            comprati.remove(Prodotto.objects.get(id=id))
+            return comprati
 
 
 class ProdottoDetailView(DetailView):
@@ -11,9 +21,13 @@ class ProdottoDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        recensioni = Recensione.objects.all().order_by('-creata')
-        context["form"] = ProdottoForm
-        context["recensioni"] = recensioni
+        recensioni = Recensione.objects.filter(prodotto=self.get_object().id).order_by('-creata')
+        correlati = Prodotto.objects.filter(ricambio=self.get_object().ricambio).exclude(id=self.get_object().id)
+        context["recensioni"] = recensioni[:5]
+        context['recensioni_count'] = Recensione.objects.all()
+        context["correlati"] = correlati[0:6]
+        context["comprati_spesso"] = comp(self.get_object().id)
+
         return context
 
 

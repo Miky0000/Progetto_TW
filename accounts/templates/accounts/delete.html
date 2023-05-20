@@ -1,0 +1,18 @@
+{% extends "homepage/base.html" %}
+
+{% block content %}
+
+    <div>
+        <h1>Conferma eliminazione profilo</h1>
+        <br>
+        <hr>
+        <h4>Sei sicuro di voler eliminare questo profilo?</h4>
+        <form method="post">
+            {% csrf_token %}
+            <br>
+            <hr>
+            <button class="btn btn-outline-danger" type="submit" >Elimina Profilo</button>
+        </form>
+    </div>
+
+{% endblock %}

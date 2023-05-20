@@ -1,12 +1,14 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, DeleteView
 from prodotto.models import Prodotto
 from ordine.models import Ordine, Recensione
-
 from .forms import RegistrationForm, UserModificaForm, ProfileModificaForm
 
 
@@ -62,3 +64,11 @@ def Modifica(request):
         user_form = UserModificaForm(instance=request.user)
         profile_form = ProfileModificaForm(instance=request.user.profile)
     return render(request, 'accounts/modifica.html', {'user_form': user_form, 'profile_form': profile_form})
+
+
+@method_decorator(login_required, name='dispatch')
+class UserDeleteView(SuccessMessageMixin, DeleteView):
+    model = User
+    template_name = 'accounts/delete.html'
+    success_url = reverse_lazy('homepage:home')
+    success_message = ' Profilo eliminato con successo'

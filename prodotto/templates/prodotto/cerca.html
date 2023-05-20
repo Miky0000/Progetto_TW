@@ -34,7 +34,7 @@
                     <th>{{ prodotti.get_categoria_display }}</th>
                     <th><h4>{{ prodotti.prezzo }}$</h4></th>
                     <th>{{ prodotti.modificato }}</th>
-                    <th><a class="btn btn-outline-primary" href="{{ prodotti.get_absolute_url }}">visualizza
+                    <th><a class="btn btn-outline-primary" href="{% url 'prodotto:prodotto-detail' prodotti.id %}">visualizza
                         prodotto</a></th>
                     <th><a class="btn btn-outline-primary" href="{% url 'carrello:cart_add' prodotti.id %}">Aggiungi al
                         carrello</a></th>

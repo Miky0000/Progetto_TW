@@ -14,7 +14,7 @@ class Ordine(models.Model):
     indirizzo = models.CharField(max_length=100)
     email = models.CharField(max_length=100)
     telefono = models.IntegerField()
-    data = models.DateTimeField(auto_now_add=True)
+    data = models.DateTimeField()
     spedito = models.BooleanField(default=False)
     restituito = models.BooleanField(default=False)
 
@@ -25,9 +25,9 @@ class Ordine(models.Model):
         return str(self.id)
 
 
-class Contattacci(models.Model):
+class Contattaci(models.Model):
     nome = models.CharField(max_length=100)
-    email = models.CharField(max_length=100)
+    email = models.EmailField(max_length=100)
     oggetto = models.CharField(max_length=100)
     messaggio = models.TextField()
 

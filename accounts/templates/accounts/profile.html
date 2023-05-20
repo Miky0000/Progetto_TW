@@ -20,6 +20,8 @@
         <a class="btn btn-outline-primary" href="{% url 'accounts:modifica' %}">Modifica il tuo profilo</a><br>
         <a class="btn btn-outline-primary" href="{% url 'ordine:ordine-list' %}">I Tuoi Ordini</a><br>
         <a class="btn btn-outline-primary" href="{% url 'ordine:rimborsi-list' %}">I Tuoi Resi</a><br>
+        <hr>
+        <a class="btn btn-outline-danger" href="{% url 'accounts:delete_profile' user.id %}">Elimina Profilo</a><br>
     </div>
     <br>
     <hr>
@@ -53,6 +55,7 @@
                 </div>
             </div>
         </div>
+    {% else %}
+        <h3>Non ci sono ancora prodotti raccomandati per te, inizia subito ad acquistare</h3>
     {% endif %}
-
 {% endblock %}

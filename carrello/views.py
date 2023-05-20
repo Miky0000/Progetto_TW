@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .cart import Cart
@@ -10,6 +11,7 @@ def cart_add(request, id):
     cart = Cart(request)
     product = Prodotto.objects.get(id=id)
     cart.add(product=product)
+    messages.success(request, ' prodotto aggiunto al carrello con successo')
     return redirect("prodotto:prodotto-detail", id)
 
 
@@ -46,6 +48,6 @@ def cart_clear(request):
 
 @login_required
 def cart_detail(request):
-    form = CheckoutForm(request.GET)
+    form = CheckoutForm(request.POST)
     prodotti = Prodotto.objects.all()
     return render(request, 'carrello/cart_detail.html', {'form': form, 'prodotti': prodotti})

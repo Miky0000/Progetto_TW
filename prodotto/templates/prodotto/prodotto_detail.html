@@ -23,19 +23,81 @@
     <p>Categoria - {{ object.get_categoria_display }}</p>
     <p>Marca - {{ object.marca }}</p>
     <p>Id prodotto - {{ object.id_prodotto }}</p>
-    <p>Modello - {{ object.modello }}</p>
+    <p>Ricambio - {{ object.ricambio }}</p>
     <p>Anno - {{ object.anno }}</p>
-    <p>Venditore - {{ object.venditore }}</p>
     <h2>Prezzo - {{ object.prezzo }} $</h2>
     <p>Descrizione - {{ object.descrizione }}</p>
     <p>Publicato - {{ object.publicato }}</p>
     <p>Ultima modifica - {{ object.modificato }}</p><br>
-    <h3><a class="btn btn-outline-primary" href="{% url 'carrello:cart_add' object.id %}">Aggiungi al carrello</a><br></h3>
+    <h3><a class="btn btn-outline-primary" href="{% url 'carrello:cart_add' object.id %}">Aggiungi al carrello</a><br>
+    </h3>
+    <br>
+    {% if comprati_spesso|length %}
+        <h2>Acquistato spesso con...</h2>
+        <div class="album py-3 bg-light">
+            <div class="container">
+                <div class="row">
+                    {% for prodotti in comprati_spesso %}
+                        <div class="col-md-3">
+                            <div class="card mb-2 shadow-sm">
+                                <img src="{{ prodotti.img.url }}" width="100%" height="150">
+                                <div class="card-body">
+                                    <p>{{ prodotti.titolo }}</p>
+                                    <p>{{ prodotti.prezzo }}$</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="btn-group">
+                                            <a type="button" class="btn btn-sm btn-outline-secondary"
+                                               href="{% url 'prodotto:prodotto-detail' prodotti.id %}">Vedi</a>
+                                            <a type="button" class="btn btn-sm btn-outline-secondary"
+                                               href="{% url 'carrello:cart_add' prodotti.id %}">Add</a>
+                                        </div>
+                                        <small class="text-muted">Recensioni({{ recensioni_count|filtra:prodotti.id|length }})</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    <br>
+    <hr>
+    <br>
+    {% if correlati|length %}
+        <h2>Prodotti correlati</h2>
+        <div class="album py-5 bg-light">
+            <div class="container">
+                <div class="row">
+                    {% for prodotti in correlati %}
+                        <div class="col-md-4">
+                            <div class="card mb-4 shadow-sm">
+                                <img src="{{ prodotti.img.url }}" width="100%" height="300">
+                                <div class="card-body">
+                                    <h3>{{ prodotti.titolo }}</h3>
+                                    <h4>{{ prodotti.prezzo }}$</h4>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="btn-group">
+                                            <a type="button" class="btn btn-sm btn-outline-secondary"
+                                               href="{% url 'prodotto:prodotto-detail' prodotti.id %}">Vedi</a>
+                                            <a type="button" class="btn btn-sm btn-outline-secondary"
+                                               href="{% url 'carrello:cart_add' prodotti.id %}">Add</a>
+                                        </div>
+                                        <small class="text-muted">Recensioni({{ recensioni_count|filtra:prodotti.id|length }})</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <h3>Non ci sono ancora prodotti correlati per questo prodotto</h3>
+    {% endif %}
     <br>
     <br>
-    <br>
-    <br>
-    {% if recensioni|filtra:object.id|length %}
+    {% if recensioni|length %}
         <h3>Recensioni</h3>
         <table class="table">
             <tr>

@@ -39,53 +39,57 @@
                         <!-- link dettaglio prodotto -->
                         {% for prod in prodotti_all %}
                             {% if prod.id == prodotti.prod_id %}
-                                <th><a href="{% url 'prodotto:prodotto-detail' prodotti.id %}">visualizza prodotto</a></th>
+                                <th><a href="{% url 'prodotto:prodotto-detail' prodotti.prod_id %}">visualizza prodotto</a>
+                                </th>
                             {% endif %}
                         {% endfor %}
                         <!-- fine dettaglio prodotto -->
                         {% if prodotti.restituito == 0 %}
-                            <th><a href="{% url 'ordine:restituisci-page' id=prodotti.id %}">restituisci prodotto</a>
+                            <th><a href="{% url 'ordine:restituisci-page' prodotti.id %}">restituisci prodotto</a>
                             </th>
-                            {% else %}
+                        {% else %}
                             <th><h2>Reso effettuato</h2></th>
                         {% endif %}
                         <th>
-                            <form class="review-form" method="get" action="{% url 'ordine:recensione-page' %}">
-                                {% csrf_token %}
-                                <input type="hidden" name="prod_id" id="prod_id" value="{{ prodotti.prod_id }}"/>
-                                <br>
-                                <div class="form-group">
+                            {% if prodotti.spedito %}
+                                <form class="review-form" method="get" action="{% url 'ordine:recensione-page' %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="prod_id" id="prod_id" value="{{ prodotti.prod_id }}"/>
+                                    <br>
+                                    <div class="form-group">
                             <textarea name="commento" id="commento" class="form-control" rows="5"
                                       placeholder="Scrivi la tua recensione"></textarea>
-                                </div>
-                                <br>
-                                <div class="form-group">
-                                    <div class="input rating">
-                                        <div class="rating-wrapper">
-                                            <h4>Valutazione</h4>
-                                            <input type="radio" required="required" id="star-1" name="valutazione"
-                                                   value="1"/>
-                                            <input type="radio" required="required" id="star-2" name="valutazione"
-                                                   value="2"/>
-                                            <input type="radio" required="required" id="star-3" name="valutazione"
-                                                   value="3"/>
-                                            <input type="radio" required="required" id="star-4" name="valutazione"
-                                                   value="4"/>
-                                            <input type="radio" required="required" id="star-5" name="valutazione"
-                                                   value="5"/>
-                                            <br>
-                                            <label for="star-1" class="fas fa-star">1</label>
-                                            <label for="star-2" class="fas fa-star">2</label>
-                                            <label for="star-3" class="fas fa-star">3</label>
-                                            <label for="star-4" class="fas fa-star">4</label>
-                                            <label for="star-5" class="fas fa-star">5</label>
+                                    </div>
+                                    <br>
+                                    <div class="form-group">
+                                        <div class="input rating">
+                                            <div class="rating-wrapper">
+                                                <h4>Valutazione</h4>
+                                                <input type="radio" required="required" id="star-1" name="valutazione"
+                                                       value="1"/>
+                                                <input type="radio" required="required" id="star-2" name="valutazione"
+                                                       value="2"/>
+                                                <input type="radio" required="required" id="star-3" name="valutazione"
+                                                       value="3"/>
+                                                <input type="radio" required="required" id="star-4" name="valutazione"
+                                                       value="4"/>
+                                                <input type="radio" required="required" id="star-5" name="valutazione"
+                                                       value="5"/>
+                                                <br>
+                                                <label for="star-1" class="fas fa-star">1</label>
+                                                <label for="star-2" class="fas fa-star">2</label>
+                                                <label for="star-3" class="fas fa-star">3</label>
+                                                <label for="star-4" class="fas fa-star">4</label>
+                                                <label for="star-5" class="fas fa-star">5</label>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div>
-                                    <input type="submit" name="submit" class="btn btn-primary pull-right" value="Invia">
-                                </div>
-                            </form>
+                                    <div>
+                                        <input type="submit" name="submit" class="btn btn-primary pull-right"
+                                               value="Invia">
+                                    </div>
+                                </form>
+                            {% endif %}
                         </th>
                     </tr>
                 {% endfor %}

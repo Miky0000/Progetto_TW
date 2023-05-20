@@ -21,11 +21,10 @@ class Prodotto(models.Model):
     img = models.ImageField(upload_to="images/")
     descrizione = models.CharField(max_length=1000)
     prezzo = models.FloatField()
-    modello = models.CharField(max_length=150, blank=True, null=True)
+    ricambio = models.CharField(max_length=150)
     anno = models.IntegerField(blank=True, null=True)
     n_acquisti = models.IntegerField(default=0)
     marca = models.CharField(max_length=100)
-    venditore = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     publicato = models.DateTimeField(auto_now_add=True)
     modificato = models.DateTimeField(auto_now=True)
 

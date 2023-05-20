@@ -22,4 +22,5 @@ urlpatterns = [
     path('profile/', views.ProfileView.as_view(), name='profile'),
     path('modifica/', views.Modifica, name='modifica'),
     path('register/', views.Register, name='register'),
+    path('delete_profile/<int:pk>/', views.UserDeleteView.as_view(), name='delete_profile'),
 ]

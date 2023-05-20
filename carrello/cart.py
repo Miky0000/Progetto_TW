@@ -1,7 +1,5 @@
-from decimal import Decimal
 from django.conf import settings
-from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 
 
 class Cart(object):
@@ -11,13 +9,13 @@ class Cart(object):
         self.session = request.session
         cart = self.session.get(settings.CART_SESSION_ID)
         if not cart:
-            # save an empty cart in the session
+            # salvataggio carrello vuoto nella sessione
             cart = self.session[settings.CART_SESSION_ID] = {}
         self.cart = cart
 
     def add(self, product, quantity=1, action=None):
         """
-        Add a product to the cart or update its quantity.
+        aggiungiamo un prodotto o una quantità
         """
         id = product.id
         newItem = True
@@ -53,14 +51,14 @@ class Cart(object):
         self.save()
 
     def save(self):
-        # update the session cart
+        # aggiornamento carrello session
         self.session[settings.CART_SESSION_ID] = self.cart
-        # mark the session as "modified" to make sure it is saved
+        # settiamo modified a true cosi siamo sicuri che verrà salvato
         self.session.modified = True
 
     def remove(self, product):
         """
-        Remove a product from the cart.
+        rimuoviamo un prodotto
         """
         product_id = str(product.id)
         if product_id in self.cart:
@@ -77,9 +75,9 @@ class Cart(object):
                 self.save()
                 break
             else:
-                print("Something Wrong")
+                print("errore")
 
     def clear(self):
-        # empty cart
+        # carrello vuoto
         self.session[settings.CART_SESSION_ID] = {}
         self.session.modified = True
