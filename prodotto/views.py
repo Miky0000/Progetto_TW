@@ -8,11 +8,11 @@ def comp(id):
     for x in ordini_det:
         ordini_dat = Ordine.objects.filter(data=x.data)
         if len(ordini_dat) > 1:
-            comprati = set(())
-            for y in ordini_dat[:3]:
-                comprati.add(Prodotto.objects.get(id=y.prod_id))
+            comprati = list(())
+            for y in ordini_dat:
+                comprati.append(Prodotto.objects.get(id=y.prod_id))
             comprati.remove(Prodotto.objects.get(id=id))
-            return comprati
+            return comprati[:4]
 
 
 class ProdottoDetailView(DetailView):
