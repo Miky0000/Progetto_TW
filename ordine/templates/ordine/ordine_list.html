@@ -30,16 +30,16 @@
                 </tr>
                 {% for prodotti in object_list %}
                     <tr>
-                        <th><img src="{{ prodotti.image }}" width="300"></th>
+                        <th><img src="{{ prodotti.prodotto.img.url }}" width="300"></th>
                         <th><h3>{{ prodotti.prodotto }}</h3></th>
-                        <th><h4>{{ prodotti.prezzo }}$</h4></th>
+                        <th><h4>{{ prodotti.prodotto.prezzo }}$</h4></th>
                         <th><h4>{{ prodotti.quantity }}</h4></th>
                         <th><h4>{{ prodotti.totale }}$</h4></th>
                         <th>{{ prodotti.data }}</th>
                         <!-- link dettaglio prodotto -->
                         {% for prod in prodotti_all %}
-                            {% if prod.id == prodotti.prod_id %}
-                                <th><a href="{% url 'prodotto:prodotto-detail' prodotti.prod_id %}">visualizza prodotto</a>
+                            {% if prod.id == prodotti.prodotto.id %}
+                                <th><a href="{% url 'prodotto:prodotto-detail' prodotti.prodotto.id %}">visualizza prodotto</a>
                                 </th>
                             {% endif %}
                         {% endfor %}
@@ -54,7 +54,7 @@
                             {% if prodotti.spedito %}
                                 <form class="review-form" method="get" action="{% url 'ordine:recensione-page' %}">
                                     {% csrf_token %}
-                                    <input type="hidden" name="prod_id" id="prod_id" value="{{ prodotti.prod_id }}"/>
+                                    <input type="hidden" name="prod_id" id="prod_id" value="{{ prodotti.prodotto.id }}"/>
                                     <br>
                                     <div class="form-group">
                             <textarea name="commento" id="commento" class="form-control" rows="5"

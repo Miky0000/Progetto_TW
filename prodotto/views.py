@@ -4,13 +4,13 @@ from ordine.models import Recensione, Ordine
 
 
 def comp(id):
-    ordini_det = Ordine.objects.filter(prod_id=id)
+    ordini_det = Ordine.objects.filter(prodotto__id=id)
     for x in ordini_det:
         ordini_dat = Ordine.objects.filter(data=x.data)
         if len(ordini_dat) > 1:
             comprati = list(())
             for y in ordini_dat:
-                comprati.append(Prodotto.objects.get(id=y.prod_id))
+                comprati.append(Prodotto.objects.get(id=y.prodotto.id))
             comprati.remove(Prodotto.objects.get(id=id))
             return comprati[:4]
 

@@ -21,7 +21,7 @@ class ProfileView(TemplateView):
         user_id = self.request.user.id
         ultimo_ordine = Ordine.objects.filter(user=user_id).order_by('-data').first()
         if ultimo_ordine:
-            ultimo_prodotto = Prodotto.objects.get(id=ultimo_ordine.prod_id)
+            ultimo_prodotto = Prodotto.objects.get(id=ultimo_ordine.prodotto.id)
             raccomandati = Prodotto.objects.filter(categoria=ultimo_prodotto.categoria).order_by('-modificato')
             context['raccomandati'] = raccomandati[0:3]
         else:

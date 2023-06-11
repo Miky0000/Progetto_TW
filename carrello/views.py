@@ -13,7 +13,10 @@ def cart_add(request, id):
     product = Prodotto.objects.get(id=id)
     cart.add(product=product)
     messages.success(request, ' prodotto aggiunto al carrello con successo')
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    if 'login' in request.META.get('HTTP_REFERER'):
+        return redirect("homepage:home")
+    else:
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 @login_required

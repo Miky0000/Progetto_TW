@@ -5,7 +5,7 @@ from django.core.mail import send_mail
 
 @admin.register(Ordine)
 class OrdineAdmin(admin.ModelAdmin):
-    list_display = ('id', 'email', 'spedito', 'restituito', 'user', 'prodotto','prod_id', 'prezzo', 'quantity', 'totale', 'data')
+    list_display = ('id', 'email', 'spedito', 'restituito', 'user', 'prodotto', 'quantity', 'totale', 'data')
     readonly_fields = ('spedito', 'restituito')
     actions = ['spedisci']
 
@@ -18,8 +18,8 @@ class OrdineAdmin(admin.ModelAdmin):
                 send_mail(
                     'Spedizione Ordine',
                     'Ciao abbiamo effettuato la spedizione del tuo ordine, \n'
-                    + o.prodotto + '\n'
-                                   'prezzo: ' + str(o.prezzo) + '\n'
+                    + o.prodotto.titolo + '\n'
+                                   'prezzo: ' + str(o.prodotto.prezzo) + '\n'
                                                                 'qty: ' + str(o.quantity) + '\n'
                                                                                             'effettuato il: ' + str(
                         o.data) + '\n'
@@ -43,7 +43,7 @@ class RecensioneAdmin(admin.ModelAdmin):
 
 @admin.register(Rimborsi)
 class RimborsiAdmin(admin.ModelAdmin):
-    list_display = ('id', 'rimborsato', 'user', 'prodotto', 'prezzo', 'quantity', 'effettuato')
+    list_display = ('id', 'rimborsato', 'quantity', 'effettuato')
     readonly_fields = ('rimborsato',)
     actions = ['rimborsa']
 
@@ -56,14 +56,14 @@ class RimborsiAdmin(admin.ModelAdmin):
                 send_mail(
                     'Rimborso Ordine',
                     'Ciao abbiamo effettuato il rimborso del tuo ordine, \n'
-                    + o.prodotto + '\n'
-                                   'prezzo: ' + str(o.prezzo) + '\n'
+                    + o.ordine.prodotto.titolo + '\n'
+                                   'prezzo: ' + str(o.ordine.prodotto.prezzo) + '\n'
                                                                 'qty: ' + str(o.quantity) + '\n'
                                                                                             'effettuato il: ' + str(
                         o.effettuato) + '\n'
                                         'riceverai il rimborso entro 4 giorni lavorativi.'
                                         'Grazie per averci scelto.',
                     request.user.email,
-                    [o.user.email],
+                    [o.ordine.user.email],
                     fail_silently=False,
                 )

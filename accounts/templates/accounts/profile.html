@@ -7,15 +7,21 @@
         <h1>Info profilo</h1>
         <br>
         <hr>
-        <h4><ul>
-            <li>Username: {{ user.username }}</li>
-            <li>Nome: {{ user.first_name }}</li>
-            <li>Cognome: {{ user.last_name }}</li>
-            <li>Mail: {{ user.email }}</li>
-            <li>Nato il: {{ user.profile.birthday }}</li>
-        </ul></h4>
+        <h4>
+            <ul>
+                <li>Username: {{ user.username }}</li>
+                <li>Nome: {{ user.first_name }}</li>
+                <li>Cognome: {{ user.last_name }}</li>
+                <li>Mail: {{ user.email }}</li>
+                <li>Nato il: {{ user.profile.birthday }}</li>
+            </ul>
+        </h4>
         <br>
         <hr>
+        {% if user.is_superuser %}
+            <a class="btn btn-outline-primary" href="{% url 'admin:index' %}">Amministrazione</a><br>
+            <hr>
+        {% endif %}
         <a class="btn btn-outline-primary" href="{% url 'accounts:password_change' %}">Cambia la tua password</a><br>
         <a class="btn btn-outline-primary" href="{% url 'accounts:modifica' %}">Modifica il tuo profilo</a><br>
         <a class="btn btn-outline-primary" href="{% url 'ordine:ordine-list' %}">I Tuoi Ordini</a><br>

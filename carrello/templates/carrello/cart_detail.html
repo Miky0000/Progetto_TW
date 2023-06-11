@@ -65,10 +65,9 @@
                                         <div class="cart-plus-minus">
                                             <a class="btn btn-secondary"
                                                href="{% url 'carrello:item_increment' value.product_id %}"> + </a>
-                                            <input class="btn btn-secondary" type="text" name="quantity"
-                                                   value="{{ value.quantity }}"/>
-                                            <a class="btn btn-secondary"
-                                               href="{% url 'carrello:item_decrement' value.product_id %}"> - </a>
+                                            <span>&emsp;{{ value.quantity }}&emsp;</span>
+                                                <a class="btn btn-secondary"
+                                                   href="{% url 'carrello:item_decrement' value.product_id %}"> - </a>
                                         </div>
                                     </td>
                                     <th></th>
