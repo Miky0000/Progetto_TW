@@ -7,6 +7,8 @@ django 4.2
 Librerie richieste:
 Pillow
 
+file "Tesina TW Michael Ciano.pdf": breve presentazione del sito
+
 Struttura progetto:
 cartella "accounts": contiene gestione utenti, login, logout, ecc..
 cartella "carrello": contiene gestione carrello di sessione per effettuare gli acquisti
